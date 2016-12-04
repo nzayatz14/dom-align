@@ -151,8 +151,19 @@ function domAlign(el, refNode, align) {
 
     // 确实要调整，甚至可能会调整高度宽度
     if (newOverflowCfg.adjustX || newOverflowCfg.adjustY) {
-      newElRegion = adjustForViewport(elFuturePos, elRegion,
-        visibleRect, newOverflowCfg);
+      var _newPoints = ['cl', 'cr']; 
+      var _newOffset = [4, 0]; 
+      var _newTargetOffset = [0, 0];
+      var _newElFuturePos = (0, _getElFuturePos2["default"])(elRegion, refNodeRegion, _newPoints, _newOffset, _newTargetOffset);
+      
+      if (!isCompleteFailY(_newElFuturePos, elRegion, visibleRect)) {
+        points = _newPoints;  
+        offset = _newOffset;  
+        targetOffset = _newTargetOffset;
+        elFuturePos = getElFuturePos(elRegion, refNodeRegion, points, offset, targetOffset);
+        _utils2["default"].mix(newElRegion, elFuturePos); 
+      }
+      //newElRegion = adjustForViewport(elFuturePos, elRegion, visibleRect, newOverflowCfg);
     }
   }
 
