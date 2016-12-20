@@ -6,6 +6,7 @@
 import utils from './utils';
 import getOffsetParent from './getOffsetParent';
 import getVisibleRectForElement from './getVisibleRectForElement';
+import adjustForViewport from './adjustForViewport';
 import getRegion from './getRegion';
 import getElFuturePos from './getElFuturePos';
 
@@ -86,7 +87,7 @@ function domAlign(el, refNode, align) {
   // 当前节点将要被放置的位置
   let elFuturePos = getElFuturePos(elRegion, refNodeRegion, points, offset, targetOffset);
   // 当前节点将要所处的区域
-  const newElRegion = utils.merge(elRegion, elFuturePos);
+  let newElRegion = utils.merge(elRegion, elFuturePos);
 
   // 如果可视区域不能完全放置当前节点时允许调整
   if (visibleRect && (overflow.adjustX || overflow.adjustY)) {
@@ -150,10 +151,10 @@ function domAlign(el, refNode, align) {
 
     // 确实要调整，甚至可能会调整高度宽度
     if (newOverflowCfg.adjustX || newOverflowCfg.adjustY) {
-      const _newPoints = ['cl', 'cr'];
-      const _newOffset = [4, 0];
-      const _newTargetOffset = [0, 0];
-      const _newElFuturePos = getElFuturePos(elRegion, refNodeRegion, _newPoints, _newOffset, _newTargetOffset);
+      var _newPoints = ['cl', 'cr'];
+      var _newOffset = [4, 0];
+      var _newTargetOffset = [0, 0];
+      var _newElFuturePos = (0, _getElFuturePos2["default"])(elRegion, refNodeRegion, _newPoints, _newOffset, _newTargetOffset);
 
       if (!isCompleteFailY(_newElFuturePos, elRegion, visibleRect)) {
         points = _newPoints;
@@ -165,13 +166,13 @@ function domAlign(el, refNode, align) {
 
       if (isFailX(_newElFuturePos, elRegion, visibleRect)) {
         // 对齐位置反下
-        const newPoints = flip(_newPoints, /[lr]/ig, {
+        const newPoints = flip(points, /[lr]/ig, {
           l: 'r',
           r: 'l',
         });
         // 偏移量也反下
-        const newOffset = flipOffset(_newOffset, 0);
-        const newTargetOffset = flipOffset(_newTargetOffset, 0);
+        const newOffset = flipOffset(offset, 0);
+        const newTargetOffset = flipOffset(targetOffset, 0);
         const newElFuturePos = getElFuturePos(elRegion, refNodeRegion,
           newPoints, newOffset, newTargetOffset);
         if (!isCompleteFailX(newElFuturePos, elRegion, visibleRect)) {
