@@ -154,7 +154,7 @@ function domAlign(el, refNode, align) {
       var _newPoints = ['cl', 'cr'];
       var _newOffset = [4, 0];
       var _newTargetOffset = [0, 0];
-      var _newElFuturePos = (0, _getElFuturePos2["default"])(elRegion, refNodeRegion, _newPoints, _newOffset, _newTargetOffset);
+      var _newElFuturePos = getElFuturePos(elRegion, refNodeRegion, _newPoints, _newOffset, _newTargetOffset);
 
       if (!isCompleteFailY(_newElFuturePos, elRegion, visibleRect)) {
         points = _newPoints;
