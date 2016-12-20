@@ -6,7 +6,6 @@
 import utils from './utils';
 import getOffsetParent from './getOffsetParent';
 import getVisibleRectForElement from './getVisibleRectForElement';
-import adjustForViewport from './adjustForViewport';
 import getRegion from './getRegion';
 import getElFuturePos from './getElFuturePos';
 
@@ -87,7 +86,7 @@ function domAlign(el, refNode, align) {
   // 当前节点将要被放置的位置
   let elFuturePos = getElFuturePos(elRegion, refNodeRegion, points, offset, targetOffset);
   // 当前节点将要所处的区域
-  let newElRegion = utils.merge(elRegion, elFuturePos);
+  const newElRegion = utils.merge(elRegion, elFuturePos);
 
   // 如果可视区域不能完全放置当前节点时允许调整
   if (visibleRect && (overflow.adjustX || overflow.adjustY)) {
@@ -151,17 +150,18 @@ function domAlign(el, refNode, align) {
 
     // 确实要调整，甚至可能会调整高度宽度
     if (newOverflowCfg.adjustX || newOverflowCfg.adjustY) {
-      var _newPoints = ['cl', 'cr'];
-      var _newOffset = [4, 0];
-      var _newTargetOffset = [0, 0];
-      var _newElFuturePos = getElFuturePos(elRegion, refNodeRegion, _newPoints, _newOffset, _newTargetOffset);
+      const _newPoints = ['cl', 'cr'];
+      const _newOffset = [4, 0];
+      const _newTargetOffset = [0, 0];
+      const _newElFuturePos = getElFuturePos(elRegion, refNodeRegion,
+        _newPoints, _newOffset, _newTargetOffset);
 
       if (!isCompleteFailY(_newElFuturePos, elRegion, visibleRect)) {
         points = _newPoints;
         offset = _newOffset;
         targetOffset = _newTargetOffset;
         elFuturePos = getElFuturePos(elRegion, refNodeRegion, points, offset, targetOffset);
-        _utils2["default"].mix(newElRegion, elFuturePos);
+        utils.mix(newElRegion, elFuturePos);
       }
 
       if (isFailX(_newElFuturePos, elRegion, visibleRect)) {
@@ -180,11 +180,11 @@ function domAlign(el, refNode, align) {
           offset = newOffset;
           targetOffset = newTargetOffset;
           elFuturePos = getElFuturePos(elRegion, refNodeRegion, points, offset, targetOffset);
-          _utils2["default"].mix(newElRegion, elFuturePos);
+          utils.mix(newElRegion, elFuturePos);
         }
       }
 
-      //newElRegion = adjustForViewport(elFuturePos, elRegion, visibleRect, newOverflowCfg);
+      // newElRegion = adjustForViewport(elFuturePos, elRegion, visibleRect, newOverflowCfg);
     }
   }
 
